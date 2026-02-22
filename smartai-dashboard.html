@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartAI - Cybersecurity Operations Center</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    
+    :root {
+      --neon-blue: #00d2d3;
+      --neon-cyan: #00ffff;
+      --neon-orange: #ff6b35;
+      --neon-red: #ff1744;
+      --neon-green: #00ff41;
+      --neon-purple: #9d00ff;
+      --dark-bg: #0a0e17;
+      --panel-bg: #111827;
+      --panel-border: #1e3a5f;
+      --glow-blue: rgba(0, 210, 211, 0.3);
+      --text-primary: #e0e7ff;
+      --text-secondary: rgba(224, 231, 255, 0.7);
+    }
+
+    /* Light Mode Colors */
+    body.light-mode {
+      --neon-blue: #003d99;
+      --neon-cyan: #0066cc;
+      --neon-orange: #ff5500;
+      --neon-red: #cc0000;
+      --neon-green: #00aa00;
+      --neon-purple: #5500aa;
+      --dark-bg: #f5f7fa;
+      --panel-bg: #e8ecf1;
+      --panel-border: #b8c5d6;
+      --glow-blue: rgba(0, 61, 153, 0.2);
+      --text-primary: #0a0f1a;
+      --text-secondary: rgba(10, 15, 26, 0.6);
+    }
+
+    html, body { 
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--dark-bg);
+      background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(0, 210, 211, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(0, 210, 211, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 0% 50%, rgba(157, 0, 255, 0.03) 0%, transparent 50%),
+        linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg) 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.light-mode {
+      background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(0, 61, 153, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(0, 61, 153, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 50%, rgba(85, 0, 170, 0.02) 0%, transparent 50%),
+        linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg) 100%);
+    }
+
+    /* Hexagonal Pattern Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(0, 210, 211, 0.02) 35px, rgba(0, 210, 211, 0.02) 70px),
+        repeating-linear-gradient(60deg, transparent, transparent 35px, rgba(0, 210, 211, 0.02) 35px, rgba(0, 210, 211, 0.02) 70px),
+        repeating-linear-gradient(120deg, transparent, transparent 35px, rgba(0, 210, 211, 0.02) 35px, rgba(0, 210, 211, 0.02) 70px);
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    body.light-mode::before {
+      background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(0, 61, 153, 0.01) 35px, rgba(0, 61, 153, 0.01) 70px),
+        repeating-linear-gradient(60deg, transparent, transparent 35px, rgba(0, 61, 153, 0.01) 35px, rgba(0, 61, 153, 0.01) 70px),
+        repeating-linear-gradient(120deg, transparent, transparent 35px, rgba(0, 61, 153, 0.01) 35px, rgba(0, 61, 153, 0.01) 70px);
+    }
+
+    .container-main {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Fonts */
+    .font-orbitron { font-family: 'Orbitron', monospace; }
+    .font-mono { font-family: 'Share Tech Mono', monospace; }
+
+    /* Neon Effects */
+    .neon-text {
+      color: var(--neon-blue);
+      text-shadow: 
+        0 0 10px var(--neon-blue),
+        0 0 20px rgba(0, 210, 211, 0.6),
+        0 0 30px rgba(0, 210, 211, 0.4);
+      letter-spacing: 2px;
+    }
+
+    .neon-border {
+      border: 1px solid var(--neon-blue);
+      box-shadow: 
+        0 0 10px rgba(0, 210, 211, 0.3),
+        inset 0 0 10px rgba(0, 210, 211, 0.1);
+    }
+
+    .panel {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(20, 31, 47, 0.8) 100%);
+      border: 1px solid var(--neon-blue);
+      border-color: rgba(0, 210, 211, 0.2);
+      border-radius: 4px;
+      padding: 20px;
+      box-shadow: 
+        0 0 20px rgba(0, 210, 211, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    body.light-mode .panel {
+      background: linear-gradient(135deg, rgba(232, 236, 241, 0.95) 0%, rgba(216, 224, 232, 0.95) 100%);
+      border-color: rgba(0, 61, 153, 0.3);
+      box-shadow: 
+        0 0 15px rgba(0, 61, 153, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+      background: linear-gradient(90deg, transparent, rgba(0, 210, 211, 0.3), transparent);
+      animation: scan 4s infinite;
+    }
+
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(90deg, rgba(10, 14, 23, 0.95) 0%, rgba(13, 19, 33, 0.95) 100%);
+      border-bottom: 1px solid rgba(0, 210, 211, 0.2);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 100;
+      transition: all 0.4s ease;
+    }
+
+    body.light-mode .header {
+      background: linear-gradient(90deg, rgba(225, 230, 238, 0.98) 0%, rgba(210, 221, 235, 0.98) 100%);
+      border-bottom-color: rgba(0, 61, 153, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 210, 211, 0.5), transparent);
+      transition: background 0.4s ease;
+    }
+
+    body.light-mode .header::after {
+      background: linear-gradient(90deg, transparent, rgba(0, 61, 153, 0.3), transparent);
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--neon-blue);
+      border-radius: 50%;
+      font-size: 28px;
+      animation: float 3s ease-in-out infinite;
+      box-shadow: 0 0 20px rgba(0, 210, 211, 0.4);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .logo-icon {
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    .header-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-title h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'Orbitron', monospace;
+      color: var(--neon-blue);
+      text-shadow: 0 0 15px rgba(0, 210, 211, 0.5);
+      letter-spacing: 3px;
+    }
+
+    .header-title p {
+      margin: 3px 0 0 0;
+      font-size: 12px;
+      color: rgba(0, 210, 211, 0.6);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px;
+      border: 1px solid rgba(0, 210, 211, 0.3);
+      border-radius: 20px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.4s ease;
+    }
+
+    body.light-mode .status-indicator {
+      border-color: rgba(0, 61, 153, 0.3);
+      background: rgba(0, 61, 153, 0.05);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status-online { 
+      background: var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+
+    .status-warning {
+      background: var(--neon-orange);
+      box-shadow: 0 0 10px var(--neon-orange);
+      animation: pulse-orange 2s ease-in-out infinite;
+    }
+
+    .status-critical {
+      background: var(--neon-red);
+      box-shadow: 0 0 10px var(--neon-red);
+      animation: pulse-red 0.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes pulse-orange {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--neon-red); }
+      50% { opacity: 0.5; box-shadow: 0 0 20px var(--neon-red); }
+    }
+
+    .digital-clock {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 20px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+      letter-spacing: 2px;
+    }
+
+    .notification-bell {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 210, 211, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .notification-bell:hover {
+      box-shadow: 0 0 20px rgba(0, 210, 211, 0.5);
+      border-color: var(--neon-blue);
+    }
+
+    /* Theme Toggle Switch */
+    .theme-toggle {
+      width: 50px;
+      height: 28px;
+      background: rgba(0, 210, 211, 0.2);
+      border: 1px solid rgba(0, 210, 211, 0.4);
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 2px;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 10px rgba(0, 210, 211, 0.3);
+    }
+
+    .theme-toggle-circle {
+      width: 22px;
+      height: 22px;
+      background: rgba(224, 231, 255, 0.8);
+      border-radius: 50%;
+      position: absolute;
+      left: 3px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(0, 210, 211, 0.3);
+    }
+
+    body.light-mode .theme-toggle {
+      background: rgba(0, 61, 153, 0.15);
+      border-color: rgba(0, 61, 153, 0.4);
+    }
+
+    body.light-mode .theme-toggle:hover {
+      box-shadow: 0 0 10px rgba(0, 61, 153, 0.3);
+    }
+
+    body.light-mode .theme-toggle-circle {
+      left: 25px;
+      background: rgba(0, 61, 153, 0.8);
+      box-shadow: 0 0 8px rgba(0, 61, 153, 0.3);
+    }
+
+    .theme-icon {
+      font-size: 14px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+
+    body.light-mode .theme-icon:first-child {
+      opacity: 0.3;
+    }
+
+    body.light-mode .theme-icon:last-child {
+      opacity: 1;
+    }
+
+    .theme-icon:first-child {
+      opacity: 1;
+    }
+
+    .theme-icon:last-child {
+      opacity: 0.3;
+    }
+
+    .notification-bell::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--neon-red);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-red);
+      top: 8px;
+      right: 8px;
+      animation: bounce 0.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 20px 30px;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .left-column, .center-column, .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Threat Meter */
+    .threat-meter {
+      text-align: center;
+    }
+
+    .threat-circle {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+    }
+
+    .threat-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: bold;
+      font-family: 'Orbitron', monospace;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .ring-low {
+      border-color: var(--neon-green);
+      color: var(--neon-green);
+      box-shadow: 
+        0 0 20px rgba(0, 255, 65, 0.3),
+        inset 0 0 20px rgba(0, 255, 65, 0.1);
+    }
+
+    .ring-medium {
+      border-color: var(--neon-orange);
+      color: var(--neon-orange);
+      box-shadow: 
+        0 0 20px rgba(255, 107, 53, 0.3),
+        inset 0 0 20px rgba(255, 107, 53, 0.1);
+    }
+
+    .ring-high {
+      border-color: var(--neon-red);
+      color: var(--neon-red);
+      box-shadow: 
+        0 0 20px rgba(255, 23, 68, 0.4),
+        inset 0 0 20px rgba(255, 23, 68, 0.1);
+      animation: pulse-red 1s ease-in-out infinite;
+    }
+
+    .threat-label {
+      margin-top: 15px;
+      font-size: 14px;
+      color: rgba(224, 231, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .threat-label {
+      color: rgba(10, 15, 26, 0.7);
+    }
+
+    /* Risk Score Bars */
+    .risk-bar-container {
+      margin-bottom: 15px;
+    }
+
+    .risk-label {
+      font-size: 12px;
+      color: rgba(224, 231, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .risk-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 210, 211, 0.1);
+      border: 1px solid rgba(0, 210, 211, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .risk-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      border-radius: 3px;
+      animation-duration: 2s;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .risk-bar.low::after {
+      background: linear-gradient(90deg, var(--neon-green), rgba(0, 255, 65, 0.5));
+      box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+      width: 35%;
+      animation: fill 2s forwards;
+    }
+
+    .risk-bar.medium::after {
+      background: linear-gradient(90deg, var(--neon-orange), rgba(255, 107, 53, 0.5));
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      width: 65%;
+      animation: fill 2s forwards;
+    }
+
+    .risk-bar.high::after {
+      background: linear-gradient(90deg, var(--neon-red), rgba(255, 23, 68, 0.5));
+      box-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
+      width: 85%;
+      animation: fill 2s forwards;
+    }
+
+    @keyframes fill {
+      from { width: 0; }
+      to { width: var(--width); }
+    }
+
+    /* Behavioral Biometrics */
+    .biometric-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: rgba(0, 210, 211, 0.05);
+      border: 1px solid rgba(0, 210, 211, 0.15);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .biometric-item:hover {
+      background: rgba(0, 210, 211, 0.1);
+      border-color: rgba(0, 210, 211, 0.3);
+      box-shadow: 0 0 10px rgba(0, 210, 211, 0.2);
+    }
+
+    body.light-mode .biometric-item {
+      background: rgba(0, 61, 153, 0.05);
+      border-color: rgba(0, 61, 153, 0.15);
+    }
+
+    body.light-mode .biometric-item:hover {
+      background: rgba(0, 61, 153, 0.1);
+      border-color: rgba(0, 61, 153, 0.3);
+      box-shadow: 0 0 10px rgba(0, 61, 153, 0.2);
+    }
+
+    .biometric-name {
+      font-size: 12px;
+      color: rgba(224, 231, 255, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .biometric-name {
+      color: rgba(10, 15, 26, 0.8);
+    }
+
+    .biometric-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .biometric-score {
+      font-size: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--neon-green);
+      text-shadow: 0 0 5px var(--neon-green);
+      transition: color 0.4s ease, text-shadow 0.4s ease;
+    }
+
+    body.light-mode .biometric-score {
+      color: #00aa00;
+      text-shadow: 0 0 4px #00aa00;
+    }
+
+    .status-badge {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: 0 0 8px var(--neon-green);
+    }
+
+    .status-badge.analyzing {
+      background: var(--neon-orange);
+      box-shadow: 0 0 8px var(--neon-orange);
+      animation: pulse-orange 1s infinite;
+    }
+
+    /* System Monitoring */
+    .monitor-section h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      margin: 0 0 15px 0;
+      color: var(--neon-blue);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(0, 210, 211, 0.4);
+    }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .monitor-stat {
+      background: rgba(0, 210, 211, 0.08);
+      border: 1px solid rgba(0, 210, 211, 0.2);
+      padding: 15px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: rgba(224, 231, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .stat-label {
+      color: rgba(10, 15, 26, 0.5);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+      transition: color 0.4s ease, text-shadow 0.4s ease;
+    }
+
+    body.light-mode .stat-value {
+      color: var(--neon-blue);
+      text-shadow: 0 0 8px var(--neon-blue);
+    }
+
+    .stat-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 210, 211, 0.1);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .stat-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), rgba(0, 255, 255, 0.5));
+      border-radius: 2px;
+      animation: fill-stat 2s forwards;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+
+    @keyframes fill-stat {
+      from { width: 0; }
+    }
+
+    /* Alerts & Logs */
+    .alerts-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .alert-feed {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 400px;
+    }
+
+    .alert-item {
+      padding: 12px;
+      border-left: 3px solid;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.3);
+      font-size: 12px;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .alert-item {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .alert-critical {
+      border-left-color: var(--neon-red);
+      background: rgba(255, 23, 68, 0.1);
+      animation: pulse-alert 1.2s ease-in-out infinite;
+    }
+
+    .alert-warning {
+      border-left-color: var(--neon-orange);
+      background: rgba(255, 107, 53, 0.08);
+    }
+
+    .alert-info {
+      border-left-color: var(--neon-blue);
+      background: rgba(0, 210, 211, 0.08);
+    }
+
+    @keyframes pulse-alert {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 23, 68, 0); }
+      50% { box-shadow: inset 0 0 10px rgba(255, 23, 68, 0.2); }
+    }
+
+    .alert-time {
+      color: rgba(224, 231, 255, 0.5);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      margin-bottom: 4px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .alert-time {
+      color: rgba(10, 15, 26, 0.4);
+    }
+
+    .alert-message {
+      color: rgba(224, 231, 255, 0.9);
+      margin-bottom: 4px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .alert-message {
+      color: rgba(10, 15, 26, 0.9);
+    }
+
+    .alert-source {
+      color: rgba(224, 231, 255, 0.4);
+      font-size: 10px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .alert-source {
+      color: rgba(10, 15, 26, 0.35);
+    }
+
+    /* Device Map */
+    .device-map-container {
+      position: relative;
+      height: 250px;
+      background: linear-gradient(135deg, rgba(0, 210, 211, 0.05) 0%, rgba(157, 0, 255, 0.03) 100%);
+      border: 1px solid rgba(0, 210, 211, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .device-node {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-blue);
+      background: rgba(0, 210, 211, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 210, 211, 0.3);
+    }
+
+    .device-node:hover {
+      transform: scale(1.15);
+      border-color: var(--neon-cyan);
+      background: rgba(0, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+
+    .device-1 { top: 20px; left: 20px; background: rgba(0, 255, 65, 0.15); border-color: var(--neon-green); }
+    .device-2 { top: 30%; right: 15%; background: rgba(0, 210, 211, 0.15); }
+    .device-3 { bottom: 20px; left: 10%; background: rgba(255, 107, 53, 0.15); border-color: var(--neon-orange); }
+    .device-4 { bottom: 30px; right: 20px; background: rgba(0, 210, 211, 0.15); }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Recommendations */
+    .recommendation-item {
+      padding: 12px;
+      background: rgba(0, 210, 211, 0.05);
+      border: 1px solid rgba(0, 210, 211, 0.15);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .recommendation-item:hover {
+      background: rgba(0, 210, 211, 0.1);
+      border-color: rgba(0, 210, 211, 0.3);
+      box-shadow: 0 0 10px rgba(0, 210, 211, 0.2);
+    }
+
+    .recommendation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .recommendation-title {
+      font-size: 12px;
+      color: rgba(224, 231, 255, 0.9);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .recommendation-title {
+      color: #001a4d;
+    }
+
+    .status-indicator-small {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .status-pending {
+      background: var(--neon-orange);
+      color: var(--neon-orange);
+    }
+
+    .status-active {
+      background: var(--neon-green);
+      color: var(--neon-green);
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .toggle {
+      width: 36px;
+      height: 20px;
+      background: rgba(0, 210, 211, 0.2);
+      border: 1px solid rgba(0, 210, 211, 0.4);
+      border-radius: 10px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: rgba(224, 231, 255, 0.6);
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .toggle.active {
+      background: rgba(0, 210, 211, 0.3);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 10px rgba(0, 210, 211, 0.3);
+    }
+
+    .toggle.active::after {
+      left: 18px;
+      background: var(--neon-blue);
+      box-shadow: 0 0 8px var(--neon-blue);
+    }
+
+    .toggle-label {
+      font-size: 11px;
+      color: rgba(224, 231, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.4s ease;
+    }
+
+    body.light-mode .toggle-label {
+      color: #001a4d;
+    }
+
+    body.light-mode .recommendation-item div {
+      color: #001a4d !important;
+    }
+
+    /* Notification Banner */
+    .notification-banner {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: linear-gradient(135deg, rgba(255, 23, 68, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
+      border: 1px solid rgba(255, 23, 68, 0.3);
+      border-radius: 4px;
+      padding: 15px 20px;
+      color: rgba(255, 23, 68, 0.9);
+      font-size: 12px;
+      z-index: 50;
+      animation: slideIn 0.5s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      max-width: 350px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    body.light-mode .notification-banner {
+      background: linear-gradient(135deg, rgba(204, 0, 0, 0.08) 0%, rgba(255, 85, 0, 0.04) 100%);
+      border-color: rgba(204, 0, 0, 0.4);
+      color: rgba(204, 0, 0, 0.9);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .notification-close {
+      cursor: pointer;
+      font-size: 16px;
+      color: rgba(255, 23, 68, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .notification-close:hover {
+      color: rgba(255, 23, 68, 0.9);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 210, 211, 0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 210, 211, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 210, 211, 0.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .main-content {
+        grid-template-columns: 1fr 1fr;
+        max-width: 100%;
+      }
+
+      .left-column { grid-column: 1; }
+      .center-column { grid-column: 2; }
+      .right-column { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+
+      .header-controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .right-column {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-main">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-section">
+        <div class="logo">
+          <span class="logo-icon">⚔</span>
+        </div>
+        <div class="header-title">
+          <h1>SmartAI</h1>
+          <p>Security Operations Center</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="status-indicator">
+          <span class="status-dot status-online"></span>
+          System Online
+        </div>
+        <div class="status-indicator">
+          <span class="status-dot status-warning"></span>
+          2 Warnings
+        </div>
+        <div class="status-indicator">
+          <span class="status-dot status-critical"></span>
+          Critical Alert
+        </div>
+        <div class="digital-clock" id="clock">00:00:00</div>
+        <div class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">
+          <span class="theme-icon">🌙</span>
+          <div class="theme-toggle-circle"></div>
+          <span class="theme-icon">☀️</span>
+        </div>
+        <div class="notification-bell" id="notificationBell">🔔</div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Left Column -->
+      <div class="left-column">
+        <!-- Threat Meter -->
+        <div class="panel threat-meter">
+          <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">Threat Level</h3>
+          <div class="threat-circle">
+            <div class="threat-ring ring-high" id="threatRing">
+              72%
+            </div>
+          </div>
+          <div class="threat-label">HIGH RISK</div>
+        </div>
+
+        <!-- Risk Score -->
+        <div class="panel">
+          <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 20px 0;">Risk Assessment</h3>
+          
+          <div class="risk-bar-container">
+            <div class="risk-label">
+              <span>Network Risk</span>
+              <span id="networkRisk">35%</span>
+            </div>
+            <div class="risk-bar low" style="--width: 35%;"></div>
+          </div>
+
+          <div class="risk-bar-container">
+            <div class="risk-label">
+              <span>Endpoint Risk</span>
+              <span id="endpointRisk">65%</span>
+            </div>
+            <div class="risk-bar medium" style="--width: 65%;"></div>
+          </div>
+
+          <div class="risk-bar-container">
+            <div class="risk-label">
+              <span>Identity Risk</span>
+              <span id="identityRisk">85%</span>
+            </div>
+            <div class="risk-bar high" style="--width: 85%;"></div>
+          </div>
+        </div>
+
+        <!-- Behavioral Biometrics -->
+        <div class="panel">
+          <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">Biometric Status</h3>
+          
+          <div class="biometric-item">
+            <span class="biometric-name">Keystroke Pattern</span>
+            <div class="biometric-status">
+              <span class="biometric-score">98.2%</span>
+              <span class="status-badge"></span>
+            </div>
+          </div>
+
+          <div class="biometric-item">
+            <span class="biometric-name">Mouse Dynamics</span>
+            <div class="biometric-status">
+              <span class="biometric-score">96.5%</span>
+              <span class="status-badge"></span>
+            </div>
+          </div>
+
+          <div class="biometric-item">
+            <span class="biometric-name">Session Context</span>
+            <div class="biometric-status">
+              <span class="biometric-score">89.3%</span>
+              <span class="status-badge analyzing"></span>
+            </div>
+          </div>
+
+          <div class="biometric-item">
+            <span class="biometric-name">Behavioral Analysis</span>
+            <div class="biometric-status">
+              <span class="biometric-score">94.7%</span>
+              <span class="status-badge"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Column -->
+      <div class="center-column">
+        <!-- System Monitoring -->
+        <div class="panel monitor-section">
+          <h3>Live System Monitoring</h3>
+          
+          <div class="monitor-grid">
+            <div class="monitor-stat">
+              <div class="stat-label">CPU Usage</div>
+              <div class="stat-value" id="cpuValue">45%</div>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 45%;"></div>
+              </div>
+            </div>
+
+            <div class="monitor-stat">
+              <div class="stat-label">RAM Usage</div>
+              <div class="stat-value" id="ramValue">62%</div>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 62%;"></div>
+              </div>
+            </div>
+
+            <div class="monitor-stat">
+              <div class="stat-label">Network Load</div>
+              <div class="stat-value" id="networkValue">28%</div>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 28%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts & Logs -->
+        <div class="panel alerts-container">
+          <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">Active Alerts & Logs</h3>
+          
+          <div class="alert-feed" id="alertFeed">
+            <div class="alert-item alert-critical">
+              <div class="alert-time">[22:47:33 UTC]</div>
+              <div class="alert-message">🔴 CRITICAL: Unauthorized access attempt detected on Server-04</div>
+              <div class="alert-source">Source: IDS-Primary | Risk: CRITICAL</div>
+            </div>
+
+            <div class="alert-item alert-warning">
+              <div class="alert-time">[22:46:18 UTC]</div>
+              <div class="alert-message">⚠ WARNING: Unusual authentication pattern from User-8742</div>
+              <div class="alert-source">Source: UEBA-Engine | Risk: HIGH</div>
+            </div>
+
+            <div class="alert-item alert-warning">
+              <div class="alert-time">[22:45:02 UTC]</div>
+              <div class="alert-message">⚠ WARNING: Multiple failed login attempts on API Gateway</div>
+              <div class="alert-source">Source: WAF-Monitor | Risk: MEDIUM</div>
+            </div>
+
+            <div class="alert-item alert-info">
+              <div class="alert-time">[22:43:45 UTC]</div>
+              <div class="alert-message">ℹ INFO: Vulnerability scan completed - 2 Medium severity issues found</div>
+              <div class="alert-source">Source: Nessus-Scanner | Risk: MEDIUM</div>
+            </div>
+
+            <div class="alert-item alert-info">
+              <div class="alert-time">[22:42:19 UTC]</div>
+              <div class="alert-message">ℹ INFO: Backup synchronization in progress - 89% complete</div>
+              <div class="alert-source">Source: Backup-Manager | Risk: LOW</div>
+            </div>
+
+            <div class="alert-item alert-critical">
+              <div class="alert-time">[22:40:56 UTC]</div>
+              <div class="alert-message">🔴 CRITICAL: Data exfiltration attempt intercepted on Port-443</div>
+              <div class="alert-source">Source: DLP-System | Risk: CRITICAL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <!-- Device Map -->
+        <div class="panel">
+          <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">Device Network Map</h3>
+          
+          <div class="device-map-container">
+            <svg id="connectionsSVG"></svg>
+            <div class="device-node device-1" title="Primary Server">🖥</div>
+            <div class="device-node device-2" title="Cloud Gateway">☁</div>
+            <div class="device-node device-3" title="User Endpoint">💻</div>
+            <div class="device-node device-4" title="Database">🗄</div>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="panel">
+          <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">Actions & Recommendations</h3>
+          
+          <div class="recommendation-item">
+            <div class="recommendation-header">
+              <span class="recommendation-title">Apply Security Patch</span>
+              <span class="status-indicator-small status-active"></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(224, 231, 255, 0.6);">
+              <span>Enabled</span>
+              <div class="toggle-switch">
+                <div class="toggle active" data-recommendation="patch"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="recommendation-item">
+            <div class="recommendation-header">
+              <span class="recommendation-title">Enable 2FA Enforcement</span>
+              <span class="status-indicator-small status-pending"></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(224, 231, 255, 0.6);">
+              <span>Disabled</span>
+              <div class="toggle-switch">
+                <div class="toggle" data-recommendation="2fa"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="recommendation-item">
+            <div class="recommendation-header">
+              <span class="recommendation-title">Isolate Affected Systems</span>
+              <span class="status-indicator-small status-active"></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(224, 231, 255, 0.6);">
+              <span>Enabled</span>
+              <div class="toggle-switch">
+                <div class="toggle active" data-recommendation="isolate"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="recommendation-item">
+            <div class="recommendation-header">
+              <span class="recommendation-title">Activate Incident Response</span>
+              <span class="status-indicator-small status-pending"></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(224, 231, 255, 0.6);">
+              <span>Disabled</span>
+              <div class="toggle-switch">
+                <div class="toggle" data-recommendation="incident"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Banner -->
+  <div class="notification-banner" id="notificationBanner">
+    <span>🔴 Critical alert detected: Unauthorized access attempt on Server-04</span>
+    <span class="notification-close" id="notificationClose">✕</span>
+  </div>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    // Initialize theme from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+    }
+
+    themeToggle.addEventListener('click', function() {
+      document.body.classList.toggle('light-mode');
+      const isLightMode = document.body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+    });
+
+    // Digital Clock
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('clock').textContent = time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Dynamically update stats
+    function updateStats() {
+      const stats = [
+        { id: 'cpuValue', min: 30, max: 75 },
+        { id: 'ramValue', min: 45, max: 80 },
+        { id: 'networkValue', min: 15, max: 50 }
+      ];
+
+      stats.forEach(stat => {
+        const value = Math.floor(Math.random() * (stat.max - stat.min + 1)) + stat.min;
+        document.getElementById(stat.id).textContent = value + '%';
+        const fillElement = document.querySelector(`#${stat.id}`).parentElement.querySelector('.stat-fill');
+        fillElement.style.width = value + '%';
+      });
+    }
+
+    setInterval(updateStats, 3000);
+
+    // Toggle Switches
+    document.querySelectorAll('.toggle').forEach(toggle => {
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+      });
+    });
+
+    // Notification Bell Click
+    document.getElementById('notificationBell').addEventListener('click', function() {
+      const banner = document.getElementById('notificationBanner');
+      if (banner.style.display === 'none') {
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    });
+
+    // Close Notification
+    document.getElementById('notificationClose').addEventListener('click', function() {
+      document.getElementById('notificationBanner').style.display = 'none';
+    });
+
+    // Device Map - Draw Connection Lines
+    function drawConnections() {
+      const svg = document.getElementById('connectionsSVG');
+      svg.innerHTML = '';
+      const devices = document.querySelectorAll('.device-node');
+      const container = document.querySelector('.device-map-container');
+      
+      devices.forEach((device, index) => {
+        if (index < devices.length - 1) {
+          const rect1 = device.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          
+          const x1 = rect1.left - containerRect.left + 20;
+          const y1 = rect1.top - containerRect.top + 20;
+          
+          const rect2 = devices[index + 1].getBoundingClientRect();
+          const x2 = rect2.left - containerRect.left + 20;
+          const y2 = rect2.top - containerRect.top + 20;
+          
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', x1);
+          line.setAttribute('y1', y1);
+          line.setAttribute('x2', x2);
+          line.setAttribute('y2', y2);
+          line.setAttribute('stroke', 'rgba(0, 210, 211, 0.3)');
+          line.setAttribute('stroke-width', '1');
+          line.setAttribute('stroke-dasharray', '5,5');
+          
+          svg.appendChild(line);
+        }
+      });
+    }
+
+    drawConnections();
+    window.addEventListener('resize', drawConnections);
+
+    // Add hover effect to device nodes
+    document.querySelectorAll('.device-node').forEach(device => {
+      device.addEventListener('mouseenter', function() {
+        const svg = document.getElementById('connectionsSVG');
+        const lines = svg.querySelectorAll('line');
+        lines.forEach(line => {
+          line.setAttribute('stroke', 'rgba(0, 255, 255, 0.6)');
+          line.setAttribute('stroke-width', '2');
+        });
+      });
+
+      device.addEventListener('mouseleave', function() {
+        const svg = document.getElementById('connectionsSVG');
+        const lines = svg.querySelectorAll('line');
+        lines.forEach(line => {
+          line.setAttribute('stroke', 'rgba(0, 210, 211, 0.3)');
+          line.setAttribute('stroke-width', '1');
+        });
+      });
+    });
+
+    // Add new alerts dynamically
+    function addNewAlert() {
+      const alertMessages = [
+        { type: 'info', time: '[22:52:15 UTC]', message: 'ℹ INFO: Security scan completed successfully', source: 'Scan-Engine | Risk: LOW' },
+        { type: 'warning', time: '[22:53:42 UTC]', message: '⚠ WARNING: Database query timeout detected', source: 'DB-Monitor | Risk: MEDIUM' },
+        { type: 'critical', time: '[22:54:18 UTC]', message: '🔴 CRITICAL: Suspicious network traffic pattern', source: 'SIEM | Risk: CRITICAL' }
+      ];
+
+      const alert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+      const alertFeed = document.getElementById('alertFeed');
+      const alertItem = document.createElement('div');
+      alertItem.className = `alert-item alert-${alert.type}`;
+      alertItem.innerHTML = `
+        <div class="alert-time">${alert.time}</div>
+        <div class="alert-message">${alert.message}</div>
+        <div class="alert-source">${alert.source}</div>
+      `;
+
+      alertFeed.insertBefore(alertItem, alertFeed.firstChild);
+
+      // Keep only 6 alerts visible
+      while (alertFeed.children.length > 6) {
+        alertFeed.removeChild(alertFeed.lastChild);
+      }
+    }
+
+    setInterval(addNewAlert, 5000);
+
+    // Animate progress bars on load
+    window.addEventListener('load', function() {
+      const fills = document.querySelectorAll('.stat-fill');
+      fills.forEach(fill => {
+        const width = fill.parentElement.parentElement.querySelector('.stat-value').textContent;
+        fill.style.animation = 'fill-stat 1.5s forwards';
+      });
+    });
+  </script>
+</body>
+</html>
