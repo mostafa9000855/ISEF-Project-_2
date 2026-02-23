@@ -445,6 +445,23 @@ git<!DOCTYPE html>
       width: 100%;
     }
 
+    /* Advanced Panels Section */
+    .advanced-panels {
+      padding: 20px 30px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1200px) {
+      .advanced-panels {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .left-column, .center-column, .right-column {
       display: flex;
       flex-direction: column;
@@ -1506,7 +1523,7 @@ git<!DOCTYPE html>
         width: 32px;
         height: 32px;
         font-size: 18px;
-        min-flex: 0;
+        flex-shrink: 0;
       }
 
       .header-title h1 {
@@ -1953,6 +1970,443 @@ git<!DOCTYPE html>
         height: 3px;
         margin-top: 3px;
       }
+
+      /* ===== NEW ADVANCED PANELS ===== */
+
+      /* XAI Explainer Panel */
+      .xai-explainer {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .xai-confidence {
+        text-align: center;
+        padding: 15px;
+        background: radial-gradient(circle at center, rgba(157, 0, 255, 0.1) 0%, transparent 70%);
+        border: 1px solid rgba(157, 0, 255, 0.3);
+        border-radius: 4px;
+      }
+
+      .confidence-value {
+        font-size: 20px;
+        font-family: 'Orbitron', monospace;
+        color: var(--neon-purple);
+        text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        margin-bottom: 5px;
+      }
+
+      .confidence-label {
+        font-size: 11px;
+        color: rgba(157, 0, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .xai-evidence-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .evidence-item {
+        padding: 10px 12px;
+        background: rgba(0, 210, 211, 0.05);
+        border: 1px solid rgba(0, 210, 211, 0.15);
+        border-left: 3px solid var(--neon-cyan);
+        border-radius: 2px;
+        font-size: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .evidence-item:hover {
+        background: rgba(0, 210, 211, 0.1);
+        border-left-color: var(--neon-blue);
+        box-shadow: 0 0 10px rgba(0, 210, 211, 0.2);
+      }
+
+      .evidence-type {
+        font-weight: 600;
+        color: var(--neon-cyan);
+        font-family: 'Rajdhani', sans-serif;
+      }
+
+      .evidence-description {
+        color: rgba(224, 231, 255, 0.8);
+        font-size: 11px;
+        margin-top: 4px;
+      }
+
+      .xai-explanation {
+        padding: 12px;
+        background: rgba(0, 255, 65, 0.05);
+        border: 1px solid rgba(0, 255, 65, 0.15);
+        border-radius: 4px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: rgba(224, 231, 255, 0.85);
+      }
+
+      /* Attack Prediction Panel */
+      .attack-prediction {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .prediction-timeline {
+        position: relative;
+        padding: 10px 0;
+      }
+
+      .timeline-item {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 15px;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 8px var(--neon-cyan);
+        border: 2px solid var(--panel-bg);
+      }
+
+      .timeline-item.high::before {
+        background: var(--neon-red);
+        box-shadow: 0 0 10px var(--neon-red);
+      }
+
+      .timeline-item.medium::before {
+        background: var(--neon-orange);
+        box-shadow: 0 0 10px var(--neon-orange);
+      }
+
+      .timeline-item.low::before {
+        background: var(--neon-green);
+        box-shadow: 0 0 10px var(--neon-green);
+      }
+
+      .timeline-connector {
+        position: absolute;
+        left: 11px;
+        top: 18px;
+        bottom: -15px;
+        width: 2px;
+        background: linear-gradient(180deg, rgba(0, 210, 211, 0.3) 0%, transparent 100%);
+      }
+
+      .timeline-item:last-child .timeline-connector {
+        display: none;
+      }
+
+      .timeline-content {
+        flex: 1;
+        padding: 10px 12px;
+        background: rgba(0, 210, 211, 0.05);
+        border: 1px solid rgba(0, 210, 211, 0.15);
+        border-radius: 2px;
+        font-size: 11px;
+      }
+
+      .timeline-time {
+        font-size: 10px;
+        color: rgba(0, 210, 211, 0.6);
+        font-family: 'Share Tech Mono', monospace;
+        margin-bottom: 4px;
+      }
+
+      .timeline-desc {
+        color: rgba(224, 231, 255, 0.8);
+        margin-bottom: 6px;
+      }
+
+      .timeline-probability {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+      }
+
+      .prob-bar {
+        width: 40px;
+        height: 4px;
+        background: rgba(0, 210, 211, 0.2);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .prob-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+        box-shadow: 0 0 6px rgba(0, 210, 211, 0.5);
+      }
+
+      .timeline-item.high .prob-fill {
+        background: linear-gradient(90deg, var(--neon-red), var(--neon-orange));
+        box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+      }
+
+      .timeline-item.medium .prob-fill {
+        background: linear-gradient(90deg, var(--neon-orange), var(--neon-cyan));
+        box-shadow: 0 0 6px rgba(255, 107, 53, 0.5);
+      }
+
+      /* Threat DNA Visualizer */
+      .threat-dna {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .dna-visualization {
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at center, rgba(0, 255, 255, 0.05) 0%, transparent 70%);
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dna-helix {
+        position: relative;
+        width: 60px;
+        height: 120px;
+      }
+
+      .dna-strand {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .dna-coil {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: float-helix 4s ease-in-out infinite;
+      }
+
+      @keyframes float-helix {
+        0%, 100% { transform: translateX(0) translateY(0) scale(1); opacity: 0.8; }
+        25% { transform: translateX(8px) translateY(-15px) scale(1.1); opacity: 1; }
+        50% { transform: translateX(0) translateY(-30px) scale(0.9); opacity: 0.7; }
+        75% { transform: translateX(-8px) translateY(-15px) scale(1.1); opacity: 1; }
+      }
+
+      .dna-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .dna-stat {
+        padding: 10px;
+        background: rgba(0, 210, 211, 0.05);
+        border: 1px solid rgba(0, 210, 211, 0.15);
+        border-radius: 2px;
+        text-align: center;
+      }
+
+      .dna-stat-value {
+        font-size: 16px;
+        font-family: 'Orbitron', monospace;
+        color: var(--neon-cyan);
+        font-weight: 600;
+      }
+
+      .dna-stat-label {
+        font-size: 10px;
+        color: rgba(224, 231, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 4px;
+      }
+
+      .variants-list {
+        font-size: 11px;
+        padding: 8px;
+        background: rgba(0, 210, 211, 0.03);
+        border-radius: 2px;
+        max-height: 80px;
+        overflow-y: auto;
+      }
+
+      .variant-item {
+        padding: 4px 0;
+        color: rgba(224, 231, 255, 0.7);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .variant-name {
+        flex: 1;
+      }
+
+      .variant-score {
+        font-family: 'Share Tech Mono', monospace;
+        color: var(--neon-blue);
+        white-space: nowrap;
+        margin-left: 8px;
+      }
+
+      /* Attack Story Report */
+      .attack-story {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .story-timeline {
+        position: relative;
+      }
+
+      .story-phase {
+        margin-bottom: 15px;
+        padding: 12px;
+        background: rgba(0, 210, 211, 0.05);
+        border: 1px solid rgba(0, 210, 211, 0.15);
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        padding-left: 35px;
+      }
+
+      .story-phase::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 15px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--neon-blue);
+        box-shadow: 0 0 6px var(--neon-blue);
+      }
+
+      .story-phase.expanded {
+        background: rgba(0, 210, 211, 0.1);
+        box-shadow: 0 0 15px rgba(0, 210, 211, 0.2);
+      }
+
+      .story-phase-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: var(--neon-cyan);
+        font-size: 12px;
+      }
+
+      .story-phase-toggle {
+        font-size: 12px;
+        transition: transform 0.3s ease;
+      }
+
+      .story-phase.expanded .story-phase-toggle {
+        transform: rotate(180deg);
+      }
+
+      .story-phase-content {
+        display: none;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(0, 210, 211, 0.1);
+        font-size: 11px;
+        color: rgba(224, 231, 255, 0.8);
+        line-height: 1.5;
+      }
+
+      .story-phase.expanded .story-phase-content {
+        display: block;
+      }
+
+      .story-action-buttons {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .story-export-btn {
+        flex: 1;
+        padding: 10px 15px;
+        background: linear-gradient(135deg, rgba(0, 210, 211, 0.2) 0%, rgba(0, 210, 211, 0.1) 100%);
+        border: 1px solid rgba(0, 210, 211, 0.3);
+        color: var(--neon-cyan);
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        font-family: 'Rajdhani', sans-serif;
+      }
+
+      .story-export-btn:hover {
+        background: linear-gradient(135deg, rgba(0, 210, 211, 0.4) 0%, rgba(0, 210, 211, 0.2) 100%);
+        box-shadow: 0 0 15px rgba(0, 210, 211, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* Scrollbar styling for advanced panels */
+      .xai-evidence-list::-webkit-scrollbar,
+      .variants-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .xai-evidence-list::-webkit-scrollbar-track,
+      .variants-list::-webkit-scrollbar-track {
+        background: rgba(0, 210, 211, 0.05);
+        border-radius: 3px;
+      }
+
+      .xai-evidence-list::-webkit-scrollbar-thumb,
+      .variants-list::-webkit-scrollbar-thumb {
+        background: rgba(0, 210, 211, 0.3);
+        border-radius: 3px;
+      }
+
+      .xai-evidence-list::-webkit-scrollbar-thumb:hover,
+      .variants-list::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 210, 211, 0.5);
+      }
+
+      /* Mobile responsive for advanced panels */
+      @media (max-width: 768px) {
+        .xai-evidence-list {
+          max-height: 150px;
+        }
+
+        .dna-helix {
+          height: 80px;
+        }
+
+        .timeline-content {
+          font-size: 10px;
+        }
+
+        .evidence-item {
+          font-size: 11px;
+        }
+      }
     }
   </style>
 </head>
@@ -2221,6 +2675,228 @@ git<!DOCTYPE html>
                 <div class="toggle" data-recommendation="incident"></div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Panels Section -->
+    <div class="advanced-panels">
+      <!-- XAI Explainer Panel -->
+      <div class="panel">
+        <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">🧠 XAI Threat Explainer</h3>
+        
+        <div class="xai-explainer">
+          <div class="xai-confidence">
+            <div class="confidence-value" id="xaiConfidence">87%</div>
+            <div class="confidence-label">Threat Confidence</div>
+          </div>
+
+          <div>
+            <div style="font-size: 11px; color: rgba(0, 210, 211, 0.8); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Evidence Chain</div>
+            <div class="xai-evidence-list" id="evidenceList">
+              <div class="evidence-item">
+                <span class="evidence-type">📊 Anomaly Detected:</span>
+                <div class="evidence-description">CPU spike 340% above baseline (67% → 294%) at 22:47:15 UTC</div>
+              </div>
+              <div class="evidence-item">
+                <span class="evidence-type">🔗 Unknown Process:</span>
+                <div class="evidence-description">svchost_update.exe contacted external IP 185.220.101.45 on port 443</div>
+              </div>
+              <div class="evidence-item">
+                <span class="evidence-type">🚨 Malware Signature:</span>
+                <div class="evidence-description">File hash matches known trojan variant TrickBot.K</div>
+              </div>
+              <div class="evidence-item">
+                <span class="evidence-type">⚠️  Behavior Pattern:</span>
+                <div class="evidence-description">Unauthorized registry modifications in HKLM\\System\\CurrentControlSet</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="xai-explanation">
+            <strong>AI Analysis:</strong> The system detected unusual activity with multiple indicators of compromise. An unknown process spawned with elevated privileges and initiated outbound connections to known C2 infrastructure. Combined with behavioral anomalies and matching malware signatures, this is classified as a <strong>HIGH-PRIORITY THREAT</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Attack Prediction Panel -->
+      <div class="panel">
+        <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">⚡ Predicted Attack Timeline</h3>
+        
+        <div class="attack-prediction">
+          <div class="prediction-timeline" id="predictionTimeline">
+            <div class="timeline-item high">
+              <div class="timeline-connector"></div>
+              <div class="timeline-content">
+                <div class="timeline-time">Next 5-10 min</div>
+                <div class="timeline-desc">Lateral movement to adjacent systems</div>
+                <div class="timeline-probability">
+                  Probability: <span style="color: var(--neon-red); font-weight: 600;">94%</span>
+                  <div class="prob-bar"><div class="prob-fill" style="width: 94%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item high">
+              <div class="timeline-connector"></div>
+              <div class="timeline-content">
+                <div class="timeline-time">10-20 min</div>
+                <div class="timeline-desc">Credential harvesting from memory</div>
+                <div class="timeline-probability">
+                  Probability: <span style="color: var(--neon-red); font-weight: 600;">88%</span>
+                  <div class="prob-bar"><div class="prob-fill" style="width: 88%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item medium">
+              <div class="timeline-connector"></div>
+              <div class="timeline-content">
+                <div class="timeline-time">20-40 min</div>
+                <div class="timeline-desc">Privilege escalation attempt on domain controller</div>
+                <div class="timeline-probability">
+                  Probability: <span style="color: var(--neon-orange); font-weight: 600;">72%</span>
+                  <div class="prob-bar"><div class="prob-fill" style="width: 72%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item low">
+              <div class="timeline-content">
+                <div class="timeline-time">40-60+ min</div>
+                <div class="timeline-desc">Potential data exfiltration phase</div>
+                <div class="timeline-probability">
+                  Probability: <span style="color: var(--neon-green); font-weight: 600;">45%</span>
+                  <div class="prob-bar"><div class="prob-fill" style="width: 45%;"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Threat DNA Visualizer Panel -->
+      <div class="panel">
+        <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">🧬 Threat DNA Profile</h3>
+        
+        <div class="threat-dna">
+          <div class="dna-visualization">
+            <div class="dna-helix">
+              <div class="dna-strand" style="left: 0;">
+                <div class="dna-coil" style="top: 0%; left: 10%; background: var(--neon-cyan); animation-delay: 0s;"></div>
+                <div class="dna-coil" style="top: 25%; right: 10%; background: var(--neon-blue); animation-delay: 0.5s;"></div>
+                <div class="dna-coil" style="top: 50%; left: 10%; background: var(--neon-cyan); animation-delay: 1s;"></div>
+                <div class="dna-coil" style="top: 75%; right: 10%; background: var(--neon-blue); animation-delay: 1.5s;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dna-info">
+            <div class="dna-stat">
+              <div class="dna-stat-value">TrickBot.K</div>
+              <div class="dna-stat-label">Primary Family</div>
+            </div>
+            <div class="dna-stat">
+              <div class="dna-stat-value">92%</div>
+              <div class="dna-stat-label">Similarity Score</div>
+            </div>
+            <div class="dna-stat">
+              <div class="dna-stat-value">15</div>
+              <div class="dna-stat-label">Variants Found</div>
+            </div>
+            <div class="dna-stat">
+              <div class="dna-stat-value">2024-Q3</div>
+              <div class="dna-stat-label">First Detected</div>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size: 11px; color: rgba(0, 210, 211, 0.8); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Known Variants</div>
+            <div class="variants-list" id="variantsList">
+              <div class="variant-item">
+                <span class="variant-name">TrickBot.K.v1 (Original)</span>
+                <span class="variant-score">100%</span>
+              </div>
+              <div class="variant-item">
+                <span class="variant-name">TrickBot.K.v2 (Polymorphic)</span>
+                <span class="variant-score">98%</span>
+              </div>
+              <div class="variant-item">
+                <span class="variant-name">TrickBot.K.v3 (Obfuscated)</span>
+                <span class="variant-score">94%</span>
+              </div>
+              <div class="variant-item">
+                <span class="variant-name">TrickBot.K.v4 (C2 Variant)</span>
+                <span class="variant-score">89%</span>
+              </div>
+              <div class="variant-item">
+                <span class="variant-name">TrickBot.K.v5 (Latest)</span>
+                <span class="variant-score">92%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attack Story Report Panel -->
+      <div class="panel">
+        <h3 style="font-family: 'Orbitron', monospace; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;">📖 Attack Story Report</h3>
+        
+        <div class="attack-story">
+          <div class="story-timeline" id="storyTimeline">
+            <div class="story-phase">
+              <div class="story-phase-header">
+                <span>Phase 1: Initial Access</span>
+                <span class="story-phase-toggle">▼</span>
+              </div>
+              <div class="story-phase-content">
+                <strong>Time:</strong> 2024-02-23 22:40:00 UTC<br>
+                <strong>Vector:</strong> Phishing email with malicious attachment<br>
+                <strong>Description:</strong> User received email spoofing payroll system with Excel file containing macro-based payload. File executed with user context privileges, establishing initial compromise.
+              </div>
+            </div>
+
+            <div class="story-phase">
+              <div class="story-phase-header">
+                <span>Phase 2: Persistence</span>
+                <span class="story-phase-toggle">▼</span>
+              </div>
+              <div class="story-phase-content">
+                <strong>Time:</strong> 2024-02-23 22:42:30 UTC<br>
+                <strong>Technique:</strong> Registry Run Key Modification<br>
+                <strong>Description:</strong> Malware modified HKLM registry to establish persistence. Created scheduled task to re-execute payload on system startup, ensuring malware survives reboot cycles.
+              </div>
+            </div>
+
+            <div class="story-phase">
+              <div class="story-phase-header">
+                <span>Phase 3: Privilege Escalation</span>
+                <span class="story-phase-toggle">▼</span>
+              </div>
+              <div class="story-phase-content">
+                <strong>Time:</strong> 2024-02-23 22:45:15 UTC<br>
+                <strong>UAC Bypass:</strong> Token Impersonation Attack<br>
+                <strong>Description:</strong> Exploited CVE-2023-21674 UAC bypass to escalate from user to administrator privileges. Attacker gained elevated command execution capability.
+              </div>
+            </div>
+
+            <div class="story-phase">
+              <div class="story-phase-header">
+                <span>Phase 4: Defense Response</span>
+                <span class="story-phase-toggle">▼</span>
+              </div>
+              <div class="story-phase-content">
+                <strong>Time:</strong> 2024-02-23 22:47:33 UTC<br>
+                <strong>Actions Taken:</strong> Automated Response<br>
+                <strong>Description:</strong> EDR detected behavioral anomalies. Process terminated, file quarantined, network connection blocked. User notified via SOC team. Forensic snapshot captured for analysis.
+              </div>
+            </div>
+          </div>
+
+          <div class="story-action-buttons">
+            <button class="story-export-btn" id="exportStoryBtn">📥 Export PDF Report</button>
+            <button class="story-export-btn" id="shareStoryBtn">📨 Share with Team</button>
           </div>
         </div>
       </div>
@@ -2721,7 +3397,226 @@ git<!DOCTYPE html>
       console.log('Press ? to see keyboard shortcuts');
       console.log('Ctrl+E to export, Ctrl+T for theme, Ctrl+F to search');
       showNotification('Dashboard loaded successfully', 'success');
+      
+      // Initialize advanced panels
+      initializeAdvancedPanels();
     });
+
+    // ==================== ADVANCED PANELS FUNCTIONALITY ====================
+
+    class AdvancedPanels {
+      constructor() {
+        this.xaiUpdate = null;
+        this.predictionUpdate = null;
+        this.dnaUpdate = null;
+        this.initXAIPanel();
+        this.initAttackPredictionPanel();
+        this.initThreatDNAPanel();
+        this.initAttackStoryPanel();
+      }
+
+      initXAIPanel() {
+        const evidenceExamples = [
+          { type: '📊 Anomaly Detected:', desc: 'CPU spike 340% above baseline (67% → 294%)' },
+          { type: '🔗 Unknown Process:', desc: 'Unregistered process contacted known C2 server' },
+          { type: '🚨 Malware Signature:', desc: 'File hash matches TrickBot.K variant' },
+          { type: '⚠️  Registry Modification:', desc: 'Unauthorized changes in HKLM\\System' },
+          { type: '🌐 Network Behavior:', desc: 'Suspicious DNS queries to domains with zero reputation' },
+          { type: '🔑 Privilege Escalation:', desc: 'Process attempted UAC bypass (CVE-2023-21674)' }
+        ];
+
+        // Rotate XAI evidence periodically
+        setInterval(() => {
+          const confidence = 75 + Math.random() * 20;
+          document.getElementById('xaiConfidence').textContent = Math.round(confidence) + '%';
+
+          // Rotate evidence items
+          const evidenceList = document.getElementById('evidenceList');
+          const items = evidenceList.querySelectorAll('.evidence-item');
+          const randomEvidence = evidenceExamples[Math.floor(Math.random() * evidenceExamples.length)];
+          
+          if (items.length > 0) {
+            items[Math.floor(Math.random() * items.length)].innerHTML = `
+              <span class="evidence-type">${randomEvidence.type}</span>
+              <div class="evidence-description">${randomEvidence.desc}</div>
+            `;
+          }
+        }, 8000);
+      }
+
+      initAttackPredictionPanel() {
+        const timeline = document.getElementById('predictionTimeline');
+        if (!timeline) return;
+
+        // Click to update predictions
+        timeline.addEventListener('click', () => {
+          this.updatePredictions();
+        });
+
+        // Auto-update predictions periodically
+        setInterval(() => {
+          this.updatePredictions();
+        }, 10000);
+      }
+
+      updatePredictions() {
+        const items = document.querySelectorAll('.timeline-item');
+        items.forEach(item => {
+          const probFill = item.querySelector('.prob-fill');
+          if (probFill) {
+            const randomProb = 40 + Math.random() * 55;
+            probFill.style.width = randomProb + '%';
+            item.querySelector('.timeline-probability span').textContent = Math.round(randomProb) + '%';
+          }
+        });
+      }
+
+      initThreatDNAPanel() {
+        const variantsList = document.getElementById('variantsList');
+        if (!variantsList) return;
+
+        const variants = [
+          'TrickBot.K (Original)',
+          'TrickBot.K (Polymorphic)',
+          'TrickBot.K (Obfuscated)',
+          'TrickBot.K (C2 Variant)',
+          'TrickBot.K.Syn (Latest)',
+          'TrickBot.Plus (Advanced)',
+          'TrickBot.Micro (Lightweight)',
+          'TrickBot.Worm (Propagation)'
+        ];
+
+        // Update variant scores periodically
+        setInterval(() => {
+          const similarity = 85 + Math.random() * 15;
+          document.querySelector('.dna-stat-value').textContent = Math.round(similarity) + '%';
+
+          // Update a random variant's score
+          const items = variantsList.querySelectorAll('.variant-item');
+          if (items.length > 0) {
+            const randomItem = items[Math.floor(Math.random() * items.length)];
+            const score = 75 + Math.random() * 25;
+            randomItem.querySelector('.variant-score').textContent = Math.round(score) + '%';
+          }
+        }, 6000);
+      }
+
+      initAttackStoryPanel() {
+        const phases = document.querySelectorAll('.story-phase');
+        
+        phases.forEach(phase => {
+          phase.addEventListener('click', function(e) {
+            if (e.target.closest('.story-phase-toggle') || !e.target.closest('.story-action-buttons')) {
+              this.classList.toggle('expanded');
+            }
+          });
+        });
+
+        // Export button functionality
+        document.getElementById('exportStoryBtn').addEventListener('click', () => {
+          this.exportStoryAsPDF();
+        });
+
+        // Share button functionality
+        document.getElementById('shareStoryBtn').addEventListener('click', () => {
+          this.shareStory();
+        });
+      }
+
+      exportStoryAsPDF() {
+        const timestamp = new Date().toLocaleString();
+        let reportContent = 'ATTACK STORY REPORT\n';
+        reportContent += '='.repeat(50) + '\n\n';
+        reportContent += `Generated: ${timestamp}\n`;
+        reportContent += `Incident Type: Malware Infection (TrickBot.K)\n`;
+        reportContent += `Severity: CRITICAL\n`;
+        reportContent += `Status: RESOLVED\n\n`;
+
+        const phases = document.querySelectorAll('.story-phase');
+        phases.forEach((phase, index) => {
+          const header = phase.querySelector('.story-phase-header span:first-child').textContent;
+          const content = phase.querySelector('.story-phase-content').textContent;
+          reportContent += `\n${index + 1}. ${header}\n`;
+          reportContent += '-'.repeat(40) + '\n';
+          reportContent += content + '\n';
+        });
+
+        reportContent += '\n\n' + '='.repeat(50) + '\n';
+        reportContent += 'RECOMMENDATIONS:\n';
+        reportContent += '• Apply security patches immediately\n';
+        reportContent += '• Reset compromised credentials\n';
+        reportContent += '• Review user account activities\n';
+        reportContent += '• Monitor for lateral movement\n\n';
+        reportContent += 'Report generated by SmartAI SOC\n';
+
+        // Download as text (PDF would require a library)
+        const blob = new Blob([reportContent], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `attack-story-report-${Date.now()}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+        showNotification('Attack story exported successfully!', 'success');
+      }
+
+      shareStory() {
+        const shareText = `SmartAI SOC Alert: Critical malware incident detected and resolved. Review the attack story report for details. #Cybersecurity #SOC`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'Attack Story Report',
+            text: shareText,
+          }).catch(err => console.log('Error sharing:', err));
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(shareText).then(() => {
+            showNotification('Report summary copied to clipboard!', 'success');
+          });
+        }
+      }
+    }
+
+    function initializeAdvancedPanels() {
+      const panels = new AdvancedPanels();
+      window.advancedPanels = panels;
+    }
+
+    // Add hover glow effect to all panels
+    document.querySelectorAll('.panel').forEach(panel => {
+      panel.addEventListener('mouseenter', function() {
+        this.style.boxShadow = `0 0 20px rgba(0, 210, 211, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)`;
+      });
+      panel.addEventListener('mouseleave', function() {
+        this.style.boxShadow = `0 0 20px rgba(0, 210, 211, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)`;
+      });
+    });
+
+    // Enhanced pulse animation for critical threats
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse-alert {
+        0%, 100% { box-shadow: 0 0 15px rgba(255, 23, 68, 0.3); }
+        50% { box-shadow: 0 0 25px rgba(255, 23, 68, 0.6); }
+      }
+
+      @keyframes glow-text {
+        0%, 100% { text-shadow: 0 0 10px rgba(0, 210, 211, 0.5); }
+        50% { text-shadow: 0 0 20px rgba(0, 210, 211, 0.8); }
+      }
+
+      .advanced-panels .panel h3 {
+        animation: glow-text 3s ease-in-out infinite;
+      }
+
+      .timeline-item.high .timeline-content {
+        animation: pulse-alert 1.5s ease-in-out infinite;
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
