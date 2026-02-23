@@ -1,0 +1,81 @@
+{
+  "name": "smartai",
+  "version": "1.0.0",
+  "description": "SmartAI - Enterprise Cybersecurity Operations Center",
+  "main": "src/electron/main.js",
+  "homepage": "./",
+  "license": "PROPRIETARY",
+  "author": "SmartAI Team",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build-cpp": "cd src/cpp && cmake .. && cmake --build . --config Release",
+    "build-python": "pip install -r requirements.txt",
+    "build-electron": "electron-builder",
+    "build": "npm run build-cpp && npm run build-python && npm run build-electron",
+    "pack": "npm run build",
+    "dist": "npm run build"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.1.1",
+    "ws": "^8.13.0",
+    "auto-launch": "^5.0.5"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4",
+    "cross-env": "^7.0.3"
+  },
+  "build": {
+    "appId": "com.smartai.app",
+    "productName": "SmartAI",
+    "files": [
+      "src/electron/**/*",
+      "src/python/**/*",
+      "build/**/*",
+      "database/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "certificateFile": null,
+      "certificatePassword": null,
+      "signingHashAlgorithms": [
+        "sha256"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SmartAI",
+      "installerIcon": "assets/installer-icon.ico",
+      "uninstallerIcon": "assets/installer-icon.ico",
+      "installerHeaderIcon": "assets/installer-header.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "useNsis7": true
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}.${ext}"
+    }
+  }
+}

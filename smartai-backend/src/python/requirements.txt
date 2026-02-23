@@ -1,0 +1,42 @@
+# SmartAI Python AI Module Dependencies
+# Python 3.10+
+
+# Core async/web framework
+asyncio-websockets>=13.0
+websockets>=13.0
+
+# Data science and analytics
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+scipy>=1.12.0
+
+# Database
+# SQLite3 is built-in with Python, no install needed
+
+# Encryption and security (AES-256 file-level encryption)
+cryptography>=41.0.0
+
+# Explainable AI
+shap>=0.43.0
+
+# Network scanning and monitoring
+scapy>=2.5.0
+
+# Network interfaces
+netifaces>=0.11.0
+
+# mDNS/Bonjour for service discovery
+zeroconf>=0.130.0
+
+# Bluetooth Low Energy
+bleak>=0.21.0
+
+# Logging
+python-json-logger>=2.0.0
+
+# Configuration management
+python-dotenv>=1.0.0
+
+# Process monitoring
+psutil>=5.10.0
